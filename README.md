@@ -57,6 +57,16 @@ cd <PROJECT_PATH>
 docker-compose down
 ```
 
+To run Composer
+```
+docker-compose run composer <ARGUMENTS>
+```
+
+To run Artisan
+```
+docker-compose run php /usr/src/myapp/artisan <ARGUMENTS>
+```
+
 Infos:
 
 * Laravel frontend: http://www.laravel.test
