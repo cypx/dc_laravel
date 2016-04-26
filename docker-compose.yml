@@ -1,0 +1,48 @@
+web:
+  build: ./docker/web
+  ports:
+    - 80
+  volumes:
+    - ./docker/web/vhost.conf:/etc/apache2/sites-enabled/vhost.conf
+    - ./htdocs/public:/var/www/html
+    - ./htdocs:/var/www
+  environment:
+    VIRTUAL_HOST: www.laravel.test
+
+php:
+  build: ./docker/php
+  volumes:
+    - ./htdocs:/usr/src/myapp
+
+composer:
+  build: ./docker/composer
+  volumes:
+    - ./htdocs:/var/www
+  working_dir: /var/www
+
+db:
+  image: mysql:5.6
+  volumes:
+    - ./mysql:/var/lib/mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: "root"
+    MYSQL_DATABASE: "laravel"
+    MYSQL_USER: "laravel"
+    MYSQL_PASSWORD: "password"
+
+mail:
+    image: occitech/alpine-mailhog
+    ports:
+      - 8025
+    environment:
+      VIRTUAL_HOST: mail.laravel.test
+      VIRTUAL_PORT: 8025
+
+pma:
+  image: phpmyadmin/phpmyadmin
+  links:
+    - db
+  ports:
+    - 80
+  environment:
+    VIRTUAL_HOST: pma.laravel.test
